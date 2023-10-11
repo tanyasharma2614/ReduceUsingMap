@@ -1,6 +1,23 @@
 class ArrayStats extends Array{
+
+    //implementing reduce using map for use in the code 
+    customReduce(reducer, initialValue){
+        let accumulator=initialValue;
+        this.map((currentValue,currentIndex)=>{
+            accumulator=reducer(accumulator,currentValue,currentIndex,this);
+        });
+        return accumulator;
+    }
+    
+    //function to calculate average
     average(){
-        const averageValue=this.reduce((a,b)=>a+b,0)/this.length;
+        console.log(this.length);
+        //handle case when array is empty
+        if(this.length===0)
+        {
+            return NaN;
+        }
+        const averageValue=this.customReduce((a,b)=>a+b,0)/this.length;
         Object.defineProperty(this,"avgVal",{
             value:averageValue,
             writable:false,
@@ -14,8 +31,12 @@ class ArrayStats extends Array{
     }
 
     stdev(){
+        //handle empty array, we are assuming that even with 1 element, stdev value is valid
+        if(this.length<1){
+            return NaN;
+        }
         const varianceArray=this.map(this.mapperVariance,this);
-        const varianceVal=varianceArray.reduce((a,b)=>a+b,0);
+        const varianceVal=varianceArray.customReduce((a,b)=>a+b,0);
         const stdevValue=Math.sqrt(varianceVal/(this.length-1));
         Object.defineProperty(this,"sdevVal",{
             value:stdevValue,
@@ -30,3 +51,7 @@ const avgResult = myArray.average();
 const stdevResult = myArray.stdev();
 console.log("Average:",avgResult);
 console.log("Standard Deviation:",stdevResult);
+
+module.exports={
+    ArrayStats
+};
