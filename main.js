@@ -11,7 +11,6 @@ class ArrayStats extends Array{
     
     //function to calculate average
     average(){
-        console.log(this.length);
         //handle case when array is empty
         if(this.length===0)
         {
@@ -31,7 +30,7 @@ class ArrayStats extends Array{
     }
 
     stdev(){
-        //handle empty array, we are assuming that even with 1 element, stdev value is valid
+        //handle empty array
         if(this.length<1){
             return NaN;
         }
